@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        meta(http-equiv="X-UA-Compatible", content="ie=edge")
+        title #{docTitle}
+    body
+        main
+            header Groups
+            form(action="/createGroup", method="POST")
+                input(type='text', name='Groupname')
+                button(type='submit') Create Group
+            ul
+                each val in groups
+                    li= val.groupname
+                    button Copy Link
+

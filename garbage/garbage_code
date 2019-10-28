@@ -1,0 +1,39 @@
+ res.sendFile(path.join(rootDir,"..","view","welcome_page.html"));
+    //res.send('<form action="/note" method="POST"><input type="text" name="title"><button type="submit">Add Note</Form>')
+    
+
+
+    save() {
+      
+        Group.getGroupsFromFiles((fileContent: any) => {
+            const groups = [];
+
+            if(fileContent.length > 0){
+                groups.push(fileContent);
+            }
+            groups.push(this);
+            fs.writeFile(p, JSON.stringify(groups), (err: any) => {
+               
+            })
+        })
+        }
+    
+
+    static getGroupsFromFiles(func: any){
+        
+        const p = path.join(
+            pathHelper,"data", "product.json"
+        );
+        fs.readFile(p,(err: any, fileContent: any) => {
+            let products = [];
+            if (!err) {
+                try{
+                products = JSON.parse(fileContent);}catch(e){
+                    console.log(e);
+                }
+            }else{
+                console.log(err);
+            }
+            func(products);
+            });
+        };

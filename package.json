@@ -1,0 +1,33 @@
+{
+  "name": "max",
+  "version": "1.0.0",
+  "main": "out/first_app.js",
+  "scripts": {
+    "start": "ts-node public/first_app.ts",
+    "dev": "./node_modules/nodemon/bin/nodemon.js",
+    "test": "jest",
+    "test:watch": "jest --watch"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/express": "^4.17.1",
+    "@types/node": "^12.7.12",
+    "body-parser": "^1.19.0",
+    "cookie-parser": "^1.4.4",
+    "ejs": "^2.7.1",
+    "express": "^4.17.1",
+    "express-handlebars": "^3.1.0",
+    "express-session": "^1.17.0",
+    "pg": "^7.12.1",
+    "pug": "^2.0.4",
+    "querystring": "^0.2.0",
+    "request": "^2.88.0",
+    "ts-node": "^8.4.1",
+    "typescript": "^3.6.4"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.3"
+  },
+  "description": ""
+}
