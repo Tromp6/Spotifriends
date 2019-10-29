@@ -1,5 +1,5 @@
-const tokenModel = require('../controller/token');
+const tokenModel = require('../model/token');
 
-module.exports = (code: String, userID: String) => {
-    tokenModel.getAndStoreAccessRefreshTokens(code, userID)
+module.exports = (code: String) => {
+    tokenModel.getAndStoreAccessRefreshTokens(code);
 };

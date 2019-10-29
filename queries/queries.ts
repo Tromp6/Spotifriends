@@ -31,12 +31,20 @@ module.exports.storePlaylistInformation = (spotifyRef: String) => {
 }
 
 module.exports.saveTokensToDB = (accessToken: String, refreshToken: any, userID: any) =>{
-    pool.query('INSERT INTO users(access_token_create, refresh_token_create) VALUES ($1, $2) WHERE id = ($3)',[accessToken, refreshToken, userID],(error: any, result: any)=>{
+     pool.query('INSERT INTO users(access_token_create, refresh_token_create) VALUES ($1, $2) WHERE id = $3',[accessToken, refreshToken, userID],(error: any, result: any)=>{
         if(error) {
             throw error;
         }
        
     });
+}
+
+module.exports.saveUserInformationToDB = (userID: String, userName: String, email: String) =>{
+    pool.query('INSERT INTO users(id, name, email) VALUES ($1, $2, $3)',[userID, userName, email], (error: any, result: any)=>{
+        if(error) {
+            throw error;
+        }
+    })
 }
 
 module.exports.getAccount

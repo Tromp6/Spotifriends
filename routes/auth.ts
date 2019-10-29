@@ -21,7 +21,7 @@ router.get("/login",(req: any, res: any) => {
     
     const state = generateRandomString(16);
     res.cookie(stateKey, state);
-    const scope = 'playlist-modify-private';
+    const scope = 'user-read-email';
 
     res.redirect('https://accounts.spotify.com/authorize?' +
     querystring.stringify({
@@ -46,10 +46,11 @@ router.get("/loggedIn",(req:any, res: any) => {
       }));
   } else {
     res.clearCookie(stateKey);
-    //tokenController(code, userID);
-    console.log(res)
+    tokenController(code);
+    
+    
 
-      
+
         res.redirect('/');
       } 
     });
