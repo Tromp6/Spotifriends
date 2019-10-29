@@ -4,7 +4,8 @@ const express = require("express");
 const querystring = require('querystring');
 const request = require('request'); 
 const generateRandomString = require('../helper/generateRandomString');
-const tokenController = require('../controller/token');
+const userController = require('../controller/user');
+const session = require('express-session');
 
 
 const router = express.Router();
@@ -45,8 +46,10 @@ router.get("/loggedIn",(req:any, res: any) => {
         error: 'state_mismatch'
       }));
   } else {
+
     res.clearCookie(stateKey);
-    tokenController(code);
+    req.session.isLoggedIn = true;
+    userController.controller(code);
     
     
 

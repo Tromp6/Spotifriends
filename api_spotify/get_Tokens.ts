@@ -25,7 +25,7 @@ module.exports = (code: String) => {
 
     request.post(authOptions, function(error: any, response: any, body: any) {
       if (!error && response.statusCode === 200) {       
-        resolve(body.access_token, body.refresh_token);     
+        resolve({accessToken: body.access_token, refreshToken: body.refresh_token});     
       }
 
       /*

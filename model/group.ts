@@ -13,37 +13,31 @@ const p = path.join(
 );
 
 
-module.exports = class Group{
+module.exports.createInstance = class Group{
     groupName: String; 
     invitationLink: String;
     spotifyRef: String;
+    option: String;
+    admin: String;
 
-  
+     
+    constructor(groupName: String, invitationLink: String, spotifyRef: String, option: String, admin: String){
+        this.groupName = groupName;
+        this.invitationLink = invitationLink;
+        this.spotifyRef = spotifyRef;
+        this.option = option;
+        this.admin = admin;
+ 
+     }
 
     save() {
-
         queries.createGroup(this);
-
-      
         }
-    
+}
 
-    static getGroupsFromDB(){
-        return new Promise(async resolve => {
-            const {rows} =  await queries.getGroups();
-            resolve(rows)
-        })
-        
-        
-           
-         
-        };
-
-    constructor(groupName: String, invitationLink: String, spotifyRef: String ){
-       this.groupName = groupName;
-       this.invitationLink = invitationLink;
-       this.spotifyRef = spotifyRef;
-
-    }
-
+module.exports.getGroupsFromDB = () => {
+    return new Promise(async resolve => {
+        const {rows} =  await queries.getGroups();
+        resolve(rows)
+    })
 }

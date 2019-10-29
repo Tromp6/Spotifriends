@@ -3,8 +3,8 @@ const async = require("async_hooks");
 
 
 module.exports.createGroup = (groupInstance: any) =>{
-   const {groupName, spotifyRef, invitationlink } = groupInstance;
-    pool.query('INSERT INTO groups(groupname, spotifyref, invitationlink) VALUES ($1, $2, $3)',[groupName,spotifyRef,invitationlink],(error: any, result: any)=>{
+   const {groupName, spotifyRef, option, invitationLink, admin} = groupInstance;
+    pool.query('INSERT INTO groups(group_name, spotify_ref, option, invitation_link, admin) VALUES ($1, $2, $3, $4, $5)',[groupName, spotifyRef, option, invitationLink, admin],(error: any, result: any)=>{
         if(error) {
             throw error;
         }
@@ -12,11 +12,16 @@ module.exports.createGroup = (groupInstance: any) =>{
     });
 }
 
+module.exports.createGroupUserTable = (groupID: String, userID: String) => {
+    
+};
+
 module.exports.getGroups = () => {
     return new Promise(resolve => {
     
       pool.query("SELECT * FROM groups;", (err: any, result: any)=>{
-          resolve(result);
+          console.log(result);
+          resolve({groupName: result});
       })
     })
 }
@@ -31,7 +36,7 @@ module.exports.storePlaylistInformation = (spotifyRef: String) => {
 }
 
 module.exports.saveTokensToDB = (accessToken: String, refreshToken: any, userID: any) =>{
-     pool.query('INSERT INTO users(access_token_create, refresh_token_create) VALUES ($1, $2) WHERE id = $3',[accessToken, refreshToken, userID],(error: any, result: any)=>{
+     pool.query('INSERT INTO users(access_token, refresh_token) VALUES ($1, $2) WHERE id = $3',[accessToken, refreshToken, userID],(error: any, result: any)=>{
         if(error) {
             throw error;
         }
@@ -47,4 +52,36 @@ module.exports.saveUserInformationToDB = (userID: String, userName: String, emai
     })
 }
 
-module.exports.getAccount
+module.exports.saveUserToDB = (user: any) =>{
+    pool.query('INSERT INTO users(id, name, email, access_token, refresh_token) VALUES ($1, $2, $3, $4, $5)',[user.userID, user.userName, user.email, user.accessToken, user.refreshToken], (error: any, result: any)=>{
+        if(error) {
+            throw error;
+        }
+    })
+};
+
+module.exports.updateUserInDB = (user: any) =>{
+    pool.query('UPDATE users SET name = $1, email = $2 , access_token = $3 , refresh_token = $4 WHERE id = $5',[user.userName, user.email, user.accessToken, user.refreshToken, user.userID], (error: any, result: any)=>{
+        if(error) {
+            throw error;
+        }
+    })
+};
+
+module.exports.getUser = (userID: any) =>{
+    return new Promise(resolve => {
+        const id = 1143005650;
+        pool.query('SELECT * FROM users WHERE id = $1',[id], (error: any, result: any)=>{
+
+
+            if(error) {
+                throw error;
+            }
+            if(result.rowCount === 0){
+                result = null;
+            }
+            resolve(result)
+        
+        })
+    })
+}
