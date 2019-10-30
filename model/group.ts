@@ -30,14 +30,14 @@ module.exports.createInstance = class Group{
  
      }
 
-    save() {
-        queries.createGroup(this);
+    save(userID: any) {
+        queries.createGroup(this, userID);
         }
 }
 
-module.exports.getGroupsFromDB = () => {
+module.exports.getGroupsFromDB = (userID: any) => {
     return new Promise(async resolve => {
-        const {rows} =  await queries.getGroups();
-        resolve(rows)
+        const groups =  await queries.getGroups(userID);  
+        resolve(groups)
     })
 }

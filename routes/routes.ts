@@ -10,7 +10,7 @@ const router = express.Router();
 router.post("/createGroup",(req: any, res: any, next: any) => {
   
     
-    groupController.createGroup(req.body.Groupname);
+    groupController.createGroup(req.body.Groupname, req.session.userID);
     res.redirect("/");
     
     
@@ -19,7 +19,8 @@ router.post("/createGroup",(req: any, res: any, next: any) => {
 router.get("/", async(req: any, res: any, next: any) =>{
   
   if(req.session.isLoggedIn === true){
-    const groups = await groupController.getGroups();
+    const groups = await groupController.getGroups(req.session.userID);
+    console.log(groups);
     res.render("homepage", {docTitle: "Max", groups: groups})
   }else{
     res.redirect("/login");

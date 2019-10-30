@@ -2,28 +2,58 @@ const pool = require("../protected/pool_config");
 const async = require("async_hooks");
 
 
-module.exports.createGroup = (groupInstance: any) =>{
-   const {groupName, spotifyRef, option, invitationLink, admin} = groupInstance;
-    pool.query('INSERT INTO groups(group_name, spotify_ref, option, invitation_link, admin) VALUES ($1, $2, $3, $4, $5)',[groupName, spotifyRef, option, invitationLink, admin],(error: any, result: any)=>{
-        if(error) {
-            throw error;
-        }
-       
-    });
-}
+    module.exports.createGroup = (groupInstance: any, userID: any) => {
+        createGroupTable(groupInstance).then((groupID: any) => {
+            createGroupUserTable(groupID, userID);
+        });
+        
+    };
 
-module.exports.createGroupUserTable = (groupID: String, userID: String) => {
-    
-};
+    function createGroupTable(groupInstance: any) {
+        const {groupName, spotifyRef, option, invitationLink, admin} = groupInstance;
 
-module.exports.getGroups = () => {
+        return new Promise((resolve: any, reject: any) => {
+            pool.query('INSERT INTO groups(group_name, spotify_ref, option, invitation_link, admin) VALUES ($1, $2, $3, $4, $5) RETURNING id',[groupName, spotifyRef, option, invitationLink, admin],(error: any, result: any)=>{
+                if(error) {
+                    reject(error);
+                }else{
+                    resolve(result.rows[0].id);
+                }    
+        })
+        })
+           
+    }
+
+    function createGroupUserTable(groupID: String, userID: String) {
+        pool.query('INSERT INTO groups_users(user_id, group_id) VALUES ($1, $2)',[userID, groupID],(error: any, result: any)=>{
+            if(error) {
+                throw error;
+            }
+        
+        });  
+    };
+
+module.exports.getGroups = (userID: any) => {
+    const groups:any = [];
     return new Promise(resolve => {
-    
-      pool.query("SELECT * FROM groups;", (err: any, result: any)=>{
-          console.log(result);
-          resolve({groupName: result});
+      pool.query("SELECT * FROM groups_users WHERE user_id = $1;", [userID], async(err: any, result: any)=>{
+      
+
+        for(let i = 0; i < result.rows.length; i++){
+            groups.push(await getSpecificGroup(result.rows[i].group_id));
+        }
+           
+          resolve(groups);
       })
     })
+}
+
+function getSpecificGroup(group_id: any) {
+    return new Promise((resolve) => {
+       pool.query("SELECT * FROM groups WHERE id = $1;", [group_id], (err: any, result: any)=>{  
+        resolve(result.rows[0]);      
+        })
+      })
 }
 
 module.exports.storePlaylistInformation = (spotifyRef: String) => {

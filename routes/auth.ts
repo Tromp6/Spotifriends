@@ -34,7 +34,7 @@ router.get("/login",(req: any, res: any) => {
     }));
 });  
 
-router.get("/loggedIn",(req:any, res: any) => {
+router.get("/loggedIn",async(req:any, res: any) => {
   const code = req.query.code || null;
   const state = req.query.state || null;
   const storedState = req.cookies ? req.cookies[stateKey] : null;
@@ -49,7 +49,7 @@ router.get("/loggedIn",(req:any, res: any) => {
 
     res.clearCookie(stateKey);
     req.session.isLoggedIn = true;
-    userController.controller(code);
+    await userController.controller(code, req);
     
     
 
