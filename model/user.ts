@@ -17,7 +17,7 @@ module.exports.createOrUpdateUser = async(code: String, req: any) => {
   req.session.userName = userName;
 
     
-    if(await queries.getUser() === null){
+    if(await queries.getUser(id) === null){
       queries.saveUserToDB(user);
     }else{
       queries.updateUserInDB(user);

@@ -5,23 +5,29 @@ const fs = require("fs");
 const bodyParser = require("body-parser");
 const session = require("express-session");
 const cookieParser = require('cookie-parser');
-
-
+const sessionStore = require('connect-pg-simple')(session);
+ 
 const generellRoutes = require("../routes/routes");
 const authRoutes = require("../routes/auth");
-
-
-
+const pool = require("../protected/pool_config");
 
 const express = require("express");
+
 const app = express();
+const store = new sessionStore({
+    pool : pool,
+    tableName : 'session'  
+  });
 
 app.set('view engine', 'pug');
 app.set('views','view' );
 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(session({
-    secret: 'my secret', resave: false, saveUninitialized: false
+    secret: 'my secret',
+    resave: false, 
+    saveUninitialized: false,
+    store: store
 }));
 app.use(cookieParser());
 

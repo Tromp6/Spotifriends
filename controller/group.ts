@@ -1,14 +1,16 @@
+
+
 const groupModel = require("../model/group");
 const createGroupInDB = require("../queries/queries");
-const getAccessAndRefreshToken = require("../api_spotify/get_Tokens");
 
-exports.createGroup = (groupName: String, userID: String) => {
+
+exports.createGroup = async(groupName: String, userID: String) => {
     const invitationLink = "dummy";
-    const spotifyRef = "dummy";
     const option = "dummy";
     const admin = "dummy";
-    const groupInstance = new groupModel.createInstance(groupName, spotifyRef, invitationLink, option, admin);
-    groupInstance.save(userID);
+    const groupInstance = new groupModel.createInstance(groupName, invitationLink, option, admin);
+     
+    await groupModel.createGroup(userID, groupInstance);
 
 }
 
@@ -17,7 +19,4 @@ exports.getGroups = (userID: any) => {
 
 }
 
-exports.getAccessAndRefreshToken = (scope: String, code: String, endpoint: String) => {
-  getAccessAndRefreshToken(scope, code, endpoint)
-}
 

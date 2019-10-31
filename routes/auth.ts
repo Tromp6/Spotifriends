@@ -22,7 +22,7 @@ router.get("/login",(req: any, res: any) => {
     
     const state = generateRandomString(16);
     res.cookie(stateKey, state);
-    const scope = 'user-read-email';
+    const scope = 'user-read-email playlist-modify-public';
 
     res.redirect('https://accounts.spotify.com/authorize?' +
     querystring.stringify({

@@ -1,9 +1,11 @@
+export{};
+
 const pool = require("../protected/pool_config");
 const async = require("async_hooks");
 
 
-    module.exports.createGroup = (groupInstance: any, userID: any) => {
-        createGroupTable(groupInstance).then((groupID: any) => {
+    module.exports.createGroupInDB = async(groupInstance: any, userID: any) => {
+       await createGroupTable(groupInstance).then((groupID: any) => {
             createGroupUserTable(groupID, userID);
         });
         
@@ -56,14 +58,6 @@ function getSpecificGroup(group_id: any) {
       })
 }
 
-module.exports.storePlaylistInformation = (spotifyRef: String) => {
-    pool.query('INSERT INTO groups(spotifyref) VALUES ($1)',[spotifyRef],(error: any, result: any)=>{
-        if(error) {
-            throw error;
-        }
-        console.log("success");
-    });
-}
 
 module.exports.saveTokensToDB = (accessToken: String, refreshToken: any, userID: any) =>{
      pool.query('INSERT INTO users(access_token, refresh_token) VALUES ($1, $2) WHERE id = $3',[accessToken, refreshToken, userID],(error: any, result: any)=>{
@@ -100,10 +94,7 @@ module.exports.updateUserInDB = (user: any) =>{
 
 module.exports.getUser = (userID: any) =>{
     return new Promise(resolve => {
-        const id = 1143005650;
-        pool.query('SELECT * FROM users WHERE id = $1',[id], (error: any, result: any)=>{
-
-
+        pool.query('SELECT * FROM users WHERE id = $1',[userID], (error: any, result: any)=>{
             if(error) {
                 throw error;
             }
@@ -114,4 +105,12 @@ module.exports.getUser = (userID: any) =>{
         
         })
     })
+}
+
+module.exports.getAccessToken = (userID: any) => {
+    return new Promise((resolve) => {
+        pool.query("SELECT access_token FROM users WHERE id = $1;", [userID], (err: any, result: any)=>{ 
+            resolve(result.rows[0].access_token);      
+         })
+       })
 }
