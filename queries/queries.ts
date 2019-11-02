@@ -12,10 +12,10 @@ const async = require("async_hooks");
     };
 
     function createGroupTable(groupInstance: any) {
-        const {groupName, spotifyRef, option, invitationLink, admin} = groupInstance;
+        const {groupName, spotifyID, option, invitationLink, admin} = groupInstance;
 
         return new Promise((resolve: any, reject: any) => {
-            pool.query('INSERT INTO groups(group_name, spotify_ref, option, invitation_link, admin) VALUES ($1, $2, $3, $4, $5) RETURNING id',[groupName, spotifyRef, option, invitationLink, admin],(error: any, result: any)=>{
+            pool.query('INSERT INTO groups(group_name, spotify_id, option, invitation_link, admin) VALUES ($1, $2, $3, $4, $5) RETURNING id',[groupName, spotifyID, option, invitationLink, admin],(error: any, result: any)=>{
                 if(error) {
                     reject(error);
                 }else{

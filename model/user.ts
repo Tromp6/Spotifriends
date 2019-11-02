@@ -14,12 +14,17 @@ module.exports.createOrUpdateUser = async(code: String, req: any) => {
   const user = new User(id, userName, email, accessToken, refreshToken);
 
   req.session.userID = id;
+ 
+
   req.session.userName = userName;
 
     
     if(await queries.getUser(id) === null){
+
       queries.saveUserToDB(user);
     }else{
+     
+
       queries.updateUserInDB(user);
     }
   

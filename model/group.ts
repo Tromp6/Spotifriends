@@ -33,11 +33,9 @@ module.exports.createInstance = class Group{
 
 module.exports.createGroup = async(userID: any, data: any) => {
     const accessToken = await queries.getAccessToken(userID);
-    const spotifyRef = await createGroupInSpotifyAndGetSpotifyRef(accessToken, data.groupName);
+    const spotifyID = await createGroupInSpotifyAndGetSpotifyID(accessToken, data.groupName, userID);
     
-    data.spotifyRef = spotifyRef;
-    console.log(data.spotifyRef);
-
+    data.spotifyID = spotifyID;
     await queries.createGroupInDB(data, userID);
 }
 
@@ -49,7 +47,7 @@ module.exports.getGroupsFromDB = (userID: any) => {
     })
 }
 
-const createGroupInSpotifyAndGetSpotifyRef = async(accessToken: any, playlistName: any) => {
-    const spotifyref = await createPlaylistInSpotify(accessToken, playlistName);
-    return spotifyref;
+const createGroupInSpotifyAndGetSpotifyID = async(accessToken: any, playlistName: any, userID: any) => {
+    const spotifyID = await createPlaylistInSpotify(accessToken, playlistName, userID);
+    return spotifyID;
 };

@@ -1,3 +1,6 @@
+
+
+
 <!DOCTYPE html>
 html(lang="en")
     head
@@ -6,6 +9,9 @@ html(lang="en")
         meta(http-equiv="X-UA-Compatible", content="ie=edge")
         title #{docTitle}
     body
+        <script nonce="some-nonce">function copyToClipboard() {
+            console.log("häää")
+            }</script>
         main
             header Groups
             form(action="/createGroup", method="POST")
@@ -14,5 +20,5 @@ html(lang="en")
             ul
                 each val in groups
                     li= val.group_name
-                    button Copy Link
+                    button.link(type='button', onclick='copyToClipboard()') Copy Link
 

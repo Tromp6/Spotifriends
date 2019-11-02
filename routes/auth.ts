@@ -20,9 +20,10 @@ const client_id = "9fac1cc7c3864dfd925c0deb2e7b04eb";
 
 router.get("/login",(req: any, res: any) => {
     
+  
     const state = generateRandomString(16);
     res.cookie(stateKey, state);
-    const scope = 'user-read-email playlist-modify-public';
+    const scope = 'user-read-email playlist-modify-public playlist-modify-private';
 
     res.redirect('https://accounts.spotify.com/authorize?' +
     querystring.stringify({
@@ -38,6 +39,7 @@ router.get("/loggedIn",async(req:any, res: any) => {
   const code = req.query.code || null;
   const state = req.query.state || null;
   const storedState = req.cookies ? req.cookies[stateKey] : null;
+  const playlistID = req.cookies["playlistID"];
 
   
   if (state === null || state !== storedState) {
@@ -46,15 +48,18 @@ router.get("/loggedIn",async(req:any, res: any) => {
         error: 'state_mismatch'
       }));
   } else {
-
+    
     res.clearCookie(stateKey);
     req.session.isLoggedIn = true;
     await userController.controller(code, req);
     
-    
+   
+        if(playlistID === null){
+          res.redirect('/');
+        }else{
+          res.redirect('/joinGroup?playlistID='+playlistID);
+        }
 
-
-        res.redirect('/');
       } 
     });
  
