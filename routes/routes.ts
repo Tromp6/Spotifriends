@@ -17,15 +17,12 @@ router.post("/createGroup",async(req: any, res: any, next: any) => {
     
 });
 
-function test(){
-  console.log("haaaaaaaaaaaaaaa");
-}
 
 router.get("/", async(req: any, res: any, next: any) =>{
   
   if(req.session.isLoggedIn === true){
     const groups = await groupController.getGroups(req.session.userID);
-    res.render("homepage", {docTitle: "Max", groups: groups, test: test})
+    res.render("homepage", {docTitle: "Max", groups: groups})
   }else{
     res.redirect("/login");
   }
