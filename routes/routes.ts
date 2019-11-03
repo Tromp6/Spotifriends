@@ -30,16 +30,22 @@ router.get("/", async(req: any, res: any, next: any) =>{
 });
 
 router.get("/joinGroup", (req: any, res: any, next: any) =>{
-  const playlistID = req.query.playlistID
-  if(req.session.isLoggedIn === true){
-   console.log("jo es geht ab man ");
-  
-  }else{
-    res.cookie("playlistID", playlistID, { path: '/loggedIn'});
-    res.redirect("/login");
-  }
-})
+  let playlistID;
 
+  if(req.query.playlistID === undefined){
+    console.log("darf nicht");
+    res.redirect("/");
+    }else{
+      playlistID = req.query.playlistID;
+      if(req.session.isLoggedIn === true){
+
+        console.log(playlistID);
+      }else{
+        res.cookie("playlistID", playlistID, {path: '/loggedIn'});
+        res.redirect("/login");
+      }
+    }
+  })
 
 
 module.exports = router;

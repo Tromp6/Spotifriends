@@ -52,12 +52,15 @@ router.get("/loggedIn",async(req:any, res: any) => {
     res.clearCookie(stateKey);
     req.session.isLoggedIn = true;
     await userController.controller(code, req);
-    
+
+        console.log(playlistID);
+        console.log(req.cookies);
    
-        if(playlistID === null){
+        if(playlistID === undefined){
           res.redirect('/');
         }else{
-          res.redirect('/joinGroup?playlistID='+playlistID);
+          console.log("bis hier gehts");
+          res.redirect('http://localhost:3000/joinGroup?playlistID='+playlistID);
         }
 
       } 
