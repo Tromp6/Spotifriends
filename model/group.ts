@@ -3,6 +3,8 @@ const queries = require("../queries/queries");
 const createPlaylistInSpotify = require("../api_spotify/create_playlist")
 const spotifyApiFollowPlaylist = require("../api_spotify/join_playlist");
 const getTracksController = require("../controller/getTracks");
+const getTracksApi = require("../api_spotify/getTracks");
+const addTracksApi = require("../api_spotify/add_tracks")
 
 const path = require("path");
 const fs = require("fs");
@@ -36,6 +38,7 @@ module.exports.joinGroup = async(userID: any, data: any) => {
     const accessToken = await queries.getAccessToken(userID);
     const groupName = await spotifyApiFollowPlaylist(accessToken, data.spotifyID, userID);
     data.groupName = "test";
+    fillPlaylist(accessToken, data.spotifyID);
     await queries.createGroupInDB(data, userID);
 }
 
@@ -44,6 +47,7 @@ module.exports.createGroup = async(userID: any, data: any) => {
     const spotifyID = await createGroupInSpotifyAndGetSpotifyID(accessToken, data.groupName, userID);
     
     data.spotifyID = spotifyID;
+    fillPlaylist(accessToken, data.spotifyID);
     await queries.createGroupInDB(data, userID);
     getTracksController.getTracks(accessToken);
 }
@@ -60,3 +64,8 @@ const createGroupInSpotifyAndGetSpotifyID = async(accessToken: any, playlistName
     const spotifyID = await createPlaylistInSpotify(accessToken, playlistName, userID);
     return spotifyID;
 };
+
+async function fillPlaylist(accessToken: any, playlistID: any){
+    const trackUriArray = await getTracksApi.getTracks(accessToken);
+    addTracksApi.addTracksToPlaylist(accessToken, playlistID, trackUriArray);
+}
