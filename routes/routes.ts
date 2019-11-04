@@ -4,6 +4,7 @@ const rootDir = require("../helper/path");
 const path = require("path");
 const groupController = require("../controller/group");
 const clipboardyForBrowser = require('copy-text-to-clipboard');
+const joinGroupController = require('../controller/join_group');
 
 const router = express.Router();
 
@@ -29,17 +30,16 @@ router.get("/", async(req: any, res: any, next: any) =>{
 
 });
 
-router.get("/joinGroup", (req: any, res: any, next: any) =>{
+router.get("/joinGroup", async(req: any, res: any, next: any) =>{
   let playlistID;
 
   if(req.query.playlistID === undefined){
-    console.log("darf nicht");
     res.redirect("/");
     }else{
       playlistID = req.query.playlistID;
       if(req.session.isLoggedIn === true){
-
-        console.log(playlistID);
+        await joinGroupController.joinGroup(playlistID,req.session.userID);
+        res.redirect("/");
       }else{
         res.cookie("playlistID", playlistID, {path: '/loggedIn'});
         res.redirect("/login");

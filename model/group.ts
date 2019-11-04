@@ -1,7 +1,8 @@
 export{};
 const queries = require("../queries/queries");
 const createPlaylistInSpotify = require("../api_spotify/create_playlist")
-
+const spotifyApiFollowPlaylist = require("../api_spotify/join_playlist");
+const getTracksController = require("../controller/getTracks");
 
 const path = require("path");
 const fs = require("fs");
@@ -31,12 +32,20 @@ module.exports.createInstance = class Group{
     
 }
 
+module.exports.joinGroup = async(userID: any, data: any) => {
+    const accessToken = await queries.getAccessToken(userID);
+    const groupName = await spotifyApiFollowPlaylist(accessToken, data.spotifyID, userID);
+    data.groupName = "test";
+    await queries.createGroupInDB(data, userID);
+}
+
 module.exports.createGroup = async(userID: any, data: any) => {
     const accessToken = await queries.getAccessToken(userID);
     const spotifyID = await createGroupInSpotifyAndGetSpotifyID(accessToken, data.groupName, userID);
     
     data.spotifyID = spotifyID;
     await queries.createGroupInDB(data, userID);
+    getTracksController.getTracks(accessToken);
 }
 
 

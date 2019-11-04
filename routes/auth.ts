@@ -23,7 +23,7 @@ router.get("/login",(req: any, res: any) => {
   
     const state = generateRandomString(16);
     res.cookie(stateKey, state);
-    const scope = 'user-read-email playlist-modify-public playlist-modify-private';
+    const scope = 'user-read-email playlist-modify-public playlist-modify-private user-top-read';
 
     res.redirect('https://accounts.spotify.com/authorize?' +
     querystring.stringify({
@@ -51,15 +51,11 @@ router.get("/loggedIn",async(req:any, res: any) => {
     
     res.clearCookie(stateKey);
     req.session.isLoggedIn = true;
-    await userController.controller(code, req);
-
-        console.log(playlistID);
-        console.log(req.cookies);
-   
+    await userController.controller(code, req);   
         if(playlistID === undefined){
           res.redirect('/');
         }else{
-          console.log("bis hier gehts");
+          res.clearCookie("playlistID");
           res.redirect('http://localhost:3000/joinGroup?playlistID='+playlistID);
         }
 

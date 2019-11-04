@@ -13,7 +13,6 @@ const async = require("async_hooks");
 
     function createGroupTable(groupInstance: any) {
         const {groupName, spotifyID, option, invitationLink, admin} = groupInstance;
-
         return new Promise((resolve: any, reject: any) => {
             pool.query('INSERT INTO groups(group_name, spotify_id, option, invitation_link, admin) VALUES ($1, $2, $3, $4, $5) RETURNING id',[groupName, spotifyID, option, invitationLink, admin],(error: any, result: any)=>{
                 if(error) {
@@ -39,13 +38,15 @@ module.exports.getGroups = (userID: any) => {
     const groups:any = [];
     return new Promise(resolve => {
       pool.query("SELECT * FROM groups_users WHERE user_id = $1;", [userID], async(err: any, result: any)=>{
-      
-
+        if(result){
         for(let i = 0; i < result.rows.length; i++){
             groups.push(await getSpecificGroup(result.rows[i].group_id));
         }
            
           resolve(groups);
+    }else{
+        resolve([]);
+    }
       })
     })
 }
