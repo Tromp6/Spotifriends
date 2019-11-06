@@ -11,11 +11,10 @@ module.exports.getTracks = (accessToken: String) => {
         };
 
         request.get(options, function(error: any, response: any, body: any) {
-            const trackUriArray = [];
+            const trackUriArray: any = [];
             for(let i = 0; i < body.items.length; i++){
                 trackUriArray.push(body.items[i].uri);
             }
-            console.log(trackUriArray);
             resolve(trackUriArray);
 
             

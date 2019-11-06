@@ -5,11 +5,16 @@ const async = require("async_hooks");
 
 
     module.exports.createGroupInDB = async(groupInstance: any, userID: any) => {
-       await createGroupTable(groupInstance).then((groupID: any) => {
-            createGroupUserTable(groupID, userID);
+       await createGroupTable(groupInstance).then(async(groupID: any) => {
+           await createGroupUserTable(groupID, userID);
         });
         
     };
+
+    module.exports.joinGroup = async(userID: any, spotifyID: any) => {
+       const groupID: any = await getSpecificGroupIDBySpotifyID(spotifyID);
+       await createGroupUserTable(groupID, userID);
+    }
 
     function createGroupTable(groupInstance: any) {
         const {groupName, spotifyID, option, invitationLink, admin} = groupInstance;
@@ -50,7 +55,15 @@ module.exports.getGroups = (userID: any) => {
       })
     })
 }
+module.exports.getSpecificGroupIDBySpotifyID = getSpecificGroupIDBySpotifyID;
 
+function getSpecificGroupIDBySpotifyID(spotifyID: any){
+    return new Promise((resolve) => {
+        pool.query("SELECT id FROM groups WHERE spotify_id = $1;", [spotifyID], (err: any, result: any)=>{  
+         resolve(result.rows[0].id);      
+         })
+       })
+}
 function getSpecificGroup(group_id: any) {
     return new Promise((resolve) => {
        pool.query("SELECT * FROM groups WHERE id = $1;", [group_id], (err: any, result: any)=>{  
@@ -114,4 +127,27 @@ module.exports.getAccessToken = (userID: any) => {
             resolve(result.rows[0].access_token);      
          })
        })
+}
+
+module.exports.getGroupNameFromDB = (spotifyID: any) => {
+    return new Promise((resolve) => {
+        pool.query("SELECT group_name FROM groups WHERE spotify_id = $1",[spotifyID],(err: any, result: any)=>{
+            resolve(result.rows[0].group_name);
+        })
+    })
+}
+
+module.exports.isUserInGroup = (groupID: any, userID: any) => {
+    return new Promise((resolve) => {
+        pool.query("SELECT * FROM groups_users WHERE group_id = $1 AND user_id = $2",[groupID, userID],(err: any, result: any)=>{
+            let userIsInGroup;
+            
+            if(result.rows.length > 0){
+                userIsInGroup = true;
+            }else{
+                userIsInGroup = false;
+            }
+            resolve(userIsInGroup);
+        })
+    })
 }

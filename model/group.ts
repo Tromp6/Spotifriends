@@ -34,12 +34,12 @@ module.exports.createInstance = class Group{
     
 }
 
-module.exports.joinGroup = async(userID: any, data: any) => {
+module.exports.joinGroup = async(userID: any, spotifyID: any) => {
     const accessToken = await queries.getAccessToken(userID);
-    const groupName = await spotifyApiFollowPlaylist(accessToken, data.spotifyID, userID);
-    data.groupName = "test";
-    fillPlaylist(accessToken, data.spotifyID);
-    await queries.createGroupInDB(data, userID);
+    spotifyApiFollowPlaylist(accessToken, spotifyID, userID);
+    const groupName = await queries.getGroupNameFromDB(spotifyID);
+    fillPlaylist(accessToken, spotifyID);
+    await queries.joinGroup(userID, spotifyID);
 }
 
 module.exports.createGroup = async(userID: any, data: any) => {
@@ -58,6 +58,11 @@ module.exports.getGroupsFromDB = (userID: any) => {
         const groups =  await queries.getGroups(userID);  
         resolve(groups)
     })
+}
+
+module.exports.isUserInGroup = async(playlistID: any, userID: any) => {
+    const groupID = await queries.getSpecificGroupIDBySpotifyID(playlistID);
+    await queries.isUserInGroup(groupID, userID);
 }
 
 const createGroupInSpotifyAndGetSpotifyID = async(accessToken: any, playlistName: any, userID: any) => {

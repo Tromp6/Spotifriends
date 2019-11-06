@@ -18,6 +18,7 @@ module.exports = function createPlaylistInSpotify(accessToken: String, playlistN
     };  
 
     request.post(options, function(error: any, response: any, body: any) {
+      console.log(error);
      resolve(body.id);
     });
   })  

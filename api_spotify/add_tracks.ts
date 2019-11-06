@@ -2,7 +2,6 @@ export{};
 const request = require('request'); 
 
 module.exports.addTracksToPlaylist = (accessToken: String, playlistID: String, trackUriArray: any) => {
-  console.log(trackUriArray);
   return new Promise((resolve) =>{
     const options = {
       url: 'https://api.spotify.com/v1/playlists/'+playlistID+'/tracks',        
@@ -16,7 +15,6 @@ module.exports.addTracksToPlaylist = (accessToken: String, playlistID: String, t
     };  
 
     request.post(options, function(error: any, response: any, body: any) {
-      console.log(response);
      resolve(response);
     });
   })  
