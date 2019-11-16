@@ -11,6 +11,9 @@ module.exports.getTracks = (accessToken: String) => {
         };
 
         request.get(options, function(error: any, response: any, body: any) {
+            if(body.error.status === 401){
+                throw(new Error("The access token expired"))
+            };
             const trackUriArray: any = [];
             for(let i = 0; i < body.items.length; i++){
                 trackUriArray.push(body.items[i].uri);

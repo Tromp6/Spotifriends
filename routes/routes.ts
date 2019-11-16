@@ -11,8 +11,11 @@ const router = express.Router();
 
 router.post("/createGroup",async(req: any, res: any, next: any) => {
   
-    
+  try{  
   await groupController.createGroup(req.body.Groupname, req.session.userID);
+  }catch(e){
+    if(e instanceof getTracks)
+  }
     res.redirect("/");
     
     
