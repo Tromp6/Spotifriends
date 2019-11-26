@@ -27,7 +27,7 @@ app.use(session({
 app.use(cookieParser());
 app.use("/", generellRoutes);
 app.use("/", authRoutes);
-app.listen(3000);
+app.listen(process.env.PORT || 3000);
 //const server = http.createServer(route);
 //server.listen(3000);
 //# sourceMappingURL=first_app.js.map
