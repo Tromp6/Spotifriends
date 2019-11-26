@@ -8,13 +8,14 @@ const queries = require("../queries/queries");
 
 module.exports.createOrUpdateUser = async(code: String, req: any) => {
   
+  
   const {accessToken, refreshToken} = await getTokens(code);
   const {id, userName, email} = await getProfile.getProfile(accessToken);
 
   const user = new User(id, userName, email, accessToken, refreshToken);
 
   req.session.userID = id;
- 
+  
 
   req.session.userName = userName;
 

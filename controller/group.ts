@@ -9,9 +9,7 @@ exports.createGroup = async(groupName: String, userID: String) => {
     const option = "dummy";
     const admin = "dummy";
     const groupInstance = new groupModel.createInstance(groupName, invitationLink, option, admin);
-     
     await groupModel.createGroup(userID, groupInstance);
-
 }
 
 exports.getGroups = (userID: any) => {

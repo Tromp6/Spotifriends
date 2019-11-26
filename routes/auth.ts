@@ -20,11 +20,11 @@ const client_id = "9fac1cc7c3864dfd925c0deb2e7b04eb";
 
 router.get("/login",(req: any, res: any) => {
     
-  
     const state = generateRandomString(16);
     res.cookie(stateKey, state);
     const scope = 'user-read-email playlist-modify-public playlist-modify-private user-top-read';
-
+    console.log("doppelt häää");
+  
     res.redirect('https://accounts.spotify.com/authorize?' +
     querystring.stringify({
       response_type: 'code',
@@ -33,6 +33,7 @@ router.get("/login",(req: any, res: any) => {
       redirect_uri: redirect_uri,
       state: state
     }));
+
 });  
 
 router.get("/loggedIn",async(req:any, res: any) => {
@@ -56,7 +57,7 @@ router.get("/loggedIn",async(req:any, res: any) => {
           res.redirect('/');
         }else{
           res.clearCookie("playlistID");
-          res.redirect('http://localhost:3000/joinGroup?playlistID='+playlistID);
+         res.redirect('http://localhost:3000/joinGroup?playlistID='+playlistID);
         }
 
       } 

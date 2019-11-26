@@ -50,6 +50,7 @@ module.exports.createGroup = async(userID: any, data: any) => {
     fillPlaylist(accessToken, data.spotifyID);
     await queries.createGroupInDB(data, userID);
     getTracksController.getTracks(accessToken);
+
 }
 
 

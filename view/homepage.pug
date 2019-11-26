@@ -8,11 +8,11 @@ html(lang="en")
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
         meta(http-equiv="X-UA-Compatible", content="ie=edge")
         title #{docTitle}
+        link(rel='stylesheet', href='/buttons.css')
     body     
         main
             script(type="text/javascript").
                 const copyToClipboard = (str) => {
-                    console.log(str);
                     const el = document.createElement('textarea');  
                     el.value = str;                                 
                     el.setAttribute('readonly', '');                
@@ -31,14 +31,15 @@ html(lang="en")
                         document.getSelection().addRange(selected);   
                     }
                 };
-            header Groups
-            form(action="/createGroup", method="POST")
+            div(class="header")
+                h1 Spotifriends
+            form(action="/createGroup", method="POST", class="form-style-8")
                 input(type='text', name='Groupname')
-                button(type='submit') Create Group
-            ul
+                button(type='submit' class="button_playlist") Create Group
+            ul(class="group")
                 each val in groups
                     li= val.group_name
-                    button(type='button', onClick='copyToClipboard(\'http://localhost:3000/joinGroup?playlistID=' + val.spotify_id + '\')') Copy Link                             
+                    button(type='button' class="button_playlist", onClick='copyToClipboard(\'http://localhost:3000/joinGroup?playlistID=' + val.spotify_id + '\')') Copy Link                             
     
 
                 

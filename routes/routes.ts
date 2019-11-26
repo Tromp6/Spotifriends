@@ -10,11 +10,11 @@ const router = express.Router();
 
 
 router.post("/createGroup",async(req: any, res: any, next: any) => {
-  
+  console.log("juhu");
   try{  
   await groupController.createGroup(req.body.Groupname, req.session.userID);
   }catch(e){
-    if(e instanceof getTracks)
+  
   }
     res.redirect("/");
     
@@ -24,7 +24,10 @@ router.post("/createGroup",async(req: any, res: any, next: any) => {
 
 router.get("/", async(req: any, res: any, next: any) =>{
   
+
   if(req.session.isLoggedIn === true){
+   
+  //  res.sendFile('view/homepage.html', {root: path.join(__dirname, '../') });
     const groups = await groupController.getGroups(req.session.userID);
     res.render("homepage", {docTitle: "Max", groups: groups})
   }else{
