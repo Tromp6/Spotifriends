@@ -11,7 +11,7 @@ const cors = require('cors');
  
 const generellRoutes = require("../routes/routes");
 const authRoutes = require("../routes/auth");
-const pool = require("../protected/pool_config");
+const pool = require("../protected/config");
 
 const express = require("express");
 
