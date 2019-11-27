@@ -7,7 +7,7 @@ const session = require("express-session");
 const cookieParser = require('cookie-parser');
 const sessionStore = require('connect-pg-simple')(session);
 const cors = require('cors');
-const pgSession = require(pgSession)
+
  
 const generellRoutes = require("../routes/routes");
 const authRoutes = require("../routes/auth");
