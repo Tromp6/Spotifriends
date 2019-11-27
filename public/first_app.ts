@@ -7,7 +7,7 @@ const session = require("express-session");
 const cookieParser = require('cookie-parser');
 const sessionStore = require('connect-pg-simple')(session);
 const cors = require('cors');
-
+const pgSession = require(pgSession)
  
 const generellRoutes = require("../routes/routes");
 const authRoutes = require("../routes/auth");
@@ -16,12 +16,14 @@ require('dotenv').config();
 const express = require("express");
 
 const app = express();
-  
+
+
+/*
 const store = new sessionStore({
     pool : pool,
     tableName : 'session'  
   });
-
+*/
 app.set('view engine', 'pug');
 app.set('views','view' );
 
@@ -29,12 +31,19 @@ app.use(express.static('public'));
 app.use(cors());
 app.use(bodyParser.urlencoded({extended: false}));
 
+
 app.use(session({
-    secret: 'my secret',
-    resave: false, 
-    saveUninitialized: false,
-    store: store
+  store: new pgSession({
+    conString: process.env.DATABASE_URL || "postgres://localhost:5432/yourproject",
+  }),
+  key: 'user_sid',
+  secret: "egalerstmal",
+  resave: false,
+  saveUninitialized: false,
+  cookie: { maxAge: 10 * 10 * 6000000 },
 }));
+
+
 
 
 app.use(cookieParser());
