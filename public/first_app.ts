@@ -28,12 +28,15 @@ app.set('views','view' );
 app.use(express.static('public'));
 app.use(cors());
 app.use(bodyParser.urlencoded({extended: false}));
+/*
 app.use(session({
     secret: 'my secret',
     resave: false, 
     saveUninitialized: false,
     store: store
 }));
+
+*/
 app.use(cookieParser());
 
 
