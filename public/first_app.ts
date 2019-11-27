@@ -12,11 +12,11 @@ const cors = require('cors');
 const generellRoutes = require("../routes/routes");
 const authRoutes = require("../routes/auth");
 const {pool} = require("../protected/config");
-
+require('dotenv').config();
 const express = require("express");
 
 const app = express();
-
+  
 const store = new sessionStore({
     pool : pool,
     tableName : 'session'  
@@ -45,16 +45,8 @@ app.use("/",authRoutes);
 
 
 
-app.listen(app.get("port"), () => {
-  console.log(
-    "  App is running at http://localhost:%d in %s mode",
-    app.get("port"),
-    app.get("env")
-  );
-  console.log("  Press CTRL-C to stop\n");
-});
 
-//app.listen(3000);
+app.listen(3000);
 
 
 
