@@ -16,11 +16,12 @@ const {pool} = require("../protected/config");
 const express = require("express");
 
 const app = express();
+/*
 const store = new sessionStore({
     pool : pool,
     tableName : 'session'  
   });
-
+*/
 app.set('view engine', 'pug');
 app.set('views','view' );
 

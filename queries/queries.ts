@@ -1,6 +1,6 @@
 export{};
 
-const pool = require("../protected/config");
+const {pool} = require("../protected/config");
 
 
     module.exports.createGroupInDB = async(groupInstance: any, userID: any) => {
