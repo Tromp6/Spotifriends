@@ -33,7 +33,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 
 
 app.use(session({
-  store: new pgSession({
+  store: new sessionStore({
     conString: process.env.DATABASE_URL || "postgres://localhost:5432/yourproject",
   }),
   key: 'user_sid',
