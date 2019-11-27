@@ -16,19 +16,19 @@ const {pool} = require("../protected/config");
 const express = require("express");
 
 const app = express();
-/*
+
 const store = new sessionStore({
     pool : pool,
     tableName : 'session'  
   });
-*/
+
 app.set('view engine', 'pug');
 app.set('views','view' );
 
 app.use(express.static('public'));
 app.use(cors());
 app.use(bodyParser.urlencoded({extended: false}));
-/*
+
 app.use(session({
     secret: 'my secret',
     resave: false, 
@@ -36,7 +36,7 @@ app.use(session({
     store: store
 }));
 
-*/
+
 app.use(cookieParser());
 
 
